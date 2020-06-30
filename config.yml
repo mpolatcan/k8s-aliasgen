@@ -1,47 +1,8 @@
+# Kubernetes Alias Generator Config
+#
 # Written by Mutlu Polatcan
 # 30.06.2020
-# Kubernetes Alias Generator Config Structure
-# =======================================================
-# api_resources:
-#   <resource_1_alias>: <resource_1_id>
-#   <resource_2_alias>: <resource_2_id>
-#   ...
-#   <resource_n_alias>: <resource_n_id>
-#
-#
-# api_cmds:
-#   <api_cmd_1_alias>:
-#     <cmd>: (string)
-#     <opts>:
-#       <opt_1_alias>:
-#         <opt>: (string)
-#         <exclude_resources>: (list: optional)
-#         <exclude_opts>: (list: optional)
-#         <parametric>: (bool: optional)
-#       ...
-#       <opt_n_alias>:
-#         <opt>: (string)
-#         <exclude_resources>: (list: optional)
-#         <exclude_opts>: (list: optional)
-#         <parametric>: (bool: optional)
-#     <exclude_resources>: (list: optional)
-#   ....
-#   <api_cmd_n_alias>:
-#     <cmd>: (string)
-#     <opts>:
-#       <opt_1_alias>:
-#         <opt>: (string)
-#         <exclude_resources>: (list: optional)
-#         <exclude_opts>: (list: optional)
-#         <parametric>: (bool: optional)
-#       ...
-#       <opt_n_alias>:
-#         <opt>: (string)
-#         <exclude_resources>: (list: optional)
-#         <exclude_opts>: (list: optional)
-#         <parametric>: (bool: optional)
-#     <exclude_resources>: (list: optional)
-# ================================================================
+# ==============================================
 
 output_filename: ".k8s_aliases"
 

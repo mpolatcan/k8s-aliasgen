@@ -1,3 +1,8 @@
+# Kubernetes Alias Generator
+#
+# Written by Mutlu Polatcan
+# 30.06.2020
+# ===================================================
 import yaml
 from sys import argv
 from itertools import permutations, chain, product
