@@ -17,6 +17,8 @@ api_resources:
   dep: "deploy"
   sts: "sts"
   hpa: "hpa"
+  cj: "cj"
+  j: "jobs"
 
 
 api_cmds:
@@ -53,8 +55,30 @@ api_cmds:
 
   rm:
     cmd: "delete"
+    opts:
+      all:
+        opt: "--all-namespaces"
+      l:
+        opt: "-l ${}"
+        parametric: true
+      ns:
+        opt: "-n ${}"
+        parametric: true
     exclude_resources: ["no"]
 
   d:
     cmd: "describe"
-    exclude_resources: ["no"]
+    opts:
+      l:
+        opt: "-l ${}"
+        parametric: true
+      ns:
+        opt: "-n ${}"
+        parametric: true
+
+  e:
+    cmd: "edit"
+    opts:
+      ns:
+        opt: "-n ${}"
+        parametric: true

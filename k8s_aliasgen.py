@@ -22,6 +22,7 @@ class K8SAliasgen:
         self.__config = yaml.safe_load(open(config_filename, "r"))
         self.__api_cmds = self.__config[self.KEY_API_CMDS]
         self.__api_resources = self.__config[self.KEY_API_RESOURCES]
+        self.__api_resources[""] = ""  # this means that
 
     def generate(self):
         aliases = []
@@ -71,8 +72,8 @@ class K8SAliasgen:
                         aliases.append(
                             ("alias k{api_cmd_alias}{res_alias}{opt_aliases}='"
                              "function _k{api_cmd_alias}{res_alias}{opt_aliases}() {{ "
-                             "kubectl {api_cmd} {res_id} {opts}; }}; "
                              "echo \"kubectl {api_cmd} {res_id} {opts}\"; "
+                             "kubectl {api_cmd} {res_id} {opts}; }}; "
                              "_k{api_cmd_alias}{res_alias}{opt_aliases}'\n").format(
                                 api_cmd_alias=api_cmd_alias,
                                 api_cmd=self.__api_cmds[api_cmd_alias][self.KEY_CMD],
@@ -84,9 +85,11 @@ class K8SAliasgen:
                         )
                     else:
                         aliases.append(
-                            ("alias k{api_cmd_alias}{res_alias}{opt_aliases}="
-                             "'echo \"kubectl {api_cmd} {res_id} {opts}\"; "
-                             "kubectl {api_cmd} {res_id} {opts}'\n").format(
+                            ("alias k{api_cmd_alias}{res_alias}{opt_aliases}='"
+                             "function _k{api_cmd_alias}{res_alias}{opt_aliases}() {{ "
+                             "echo \"kubectl {api_cmd} {res_id} {opts} $@\"; "
+                             "kubectl {api_cmd} {res_id} {opts} $@; }}; "
+                             "_k{api_cmd_alias}{res_alias}{opt_aliases}'\n").format(
                                 api_cmd_alias=api_cmd_alias,
                                 api_cmd=self.__api_cmds[api_cmd_alias][self.KEY_CMD],
                                 res_alias=resource_alias,
