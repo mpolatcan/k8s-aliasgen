@@ -17,6 +17,8 @@ class K8SAliasgen:
     KEY_PARAMETRIC = "parametric"
     KEY_EXCLUDE_RESOURCES = "exclude_resources"
     KEY_EXCLUDE_OPTS = "exclude_opts"
+    KEY_RESOURCE_SPECIFIC = "resource_specific"
+    KEY_OR_REQUIRED_OPTS = "or_required_opts"
 
     def __init__(self, config_filename="config.yml"):
         self.__config = yaml.safe_load(open(config_filename, "r"))
@@ -48,9 +50,17 @@ class K8SAliasgen:
                         for opt_alias in opt_aliases
                         if opts_config[opt_alias].get(self.KEY_PARAMETRIC, False)
                     ])
+                    not_resource_specific_opts_count = len([
+                        opt_alias
+                        for opt_alias in opt_aliases
+                        if not opts_config[opt_alias].get(self.KEY_RESOURCE_SPECIFIC, True)
+                    ])
+
                     valid_alias = True
 
-                    if resource_alias in self.__api_cmds[api_cmd_alias].get(self.KEY_EXCLUDE_RESOURCES, []):
+                    if resource_alias in self.__api_cmds[api_cmd_alias].get(self.KEY_EXCLUDE_RESOURCES, []) or \
+                       (resource_alias != "" and not self.__api_cmds[api_cmd_alias].get(self.KEY_RESOURCE_SPECIFIC, True)) or \
+                       (resource_alias != "" and not_resource_specific_opts_count > 0):
                         valid_alias = False
                     else:
                         for opt_alias in opt_aliases:

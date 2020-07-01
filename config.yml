@@ -64,6 +64,15 @@ api_cmds:
       ns:
         opt: "-n ${}"
         parametric: true
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts: ["k"]
+        resource_specific: false
+      k:
+        opt: "-k ${}"
+        parametric: true
+        resource_specific: false
     exclude_resources: ["no"]
 
   d:
@@ -75,6 +84,7 @@ api_cmds:
       ns:
         opt: "-n ${}"
         parametric: true
+    exclude_resources: ["no"]
 
   e:
     cmd: "edit"
@@ -82,3 +92,38 @@ api_cmds:
       ns:
         opt: "-n ${}"
         parametric: true
+    exclude_resources: ["no"]
+
+  log:
+    cmd: "logs"
+    opts:
+      f:
+        opt: "-f"
+      l:
+        opt: "-l ${}"
+        parametric: true
+      ns:
+        opt: "-n ${}"
+        parametric: true
+    resource_specific: false
+
+  a:
+    cmd: "apply"
+    opts:
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts: ["k"]
+      l:
+        opt: "-l ${}"
+        parametric: true
+      k:
+        opt: "-k ${}"
+        parametric: true
+        exclude_opts: ["f"]
+      r:
+        opt: "--recursive"
+      ns:
+        opt: "-n ${}"
+        parametric: true
+    resource_specific: false
