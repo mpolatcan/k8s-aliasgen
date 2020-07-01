@@ -27,64 +27,142 @@ api_cmds:
     opts:
       all:
         opt: "--all-namespaces"
-        exclude_resources: ["no"]
+        exclude_resources:
+          - "no"
+        exclude_opts:
+          - "ns"
+      # ========================
       w:
         opt: "--watch"
-        exclude_resources: ["pv", "pvc", "sec", "svc", "ing"]
-        exclude_opts: ["ojson", "oyaml"]
+        exclude_resources:
+          - "pv"
+          - "pvc"
+          - "sec"
+          - "svc"
+          - "ing"
+        exclude_opts:
+          - "ojson"
+          - "oyaml"
+      # ========================
       sl:
         opt: "--show-labels"
-        exclude_opts: ["ojson", "oyaml"]
+        exclude_opts:
+          - "ojson"
+          - "oyaml"
+      # ========================
       l:
         opt: "-l ${}"
         parametric: true
-        exclude_resources: ["no"]
+        exclude_resources:
+          - "no"
+      # ========================
       ns:
         opt: "-n ${}"
         parametric: true
-        exclude_resources: ["no"]
+        exclude_opts:
+          - "all"
+        exclude_resources:
+          - "no"
+      # ========================
       owide:
         opt: "-o wide"
-        exclude_opts: ["oyaml", "ojson"]
+        exclude_opts:
+          - "oyaml"
+          - "ojson"
+      # ========================
       oyaml:
         opt: "-o yaml"
-        exclude_opts: ["w", "owide", "ojson"]
+        exclude_opts:
+          - "w"
+          - "owide"
+          - "ojson"
+      # ========================
       ojson:
         opt: "-o json"
-        exclude_opts: ["w", "owide", "oyaml"]
+        exclude_opts:
+          - "w"
+          - "owide"
+          - "oyaml"
+      # ========================
+
+# ==============================================================
 
   rm:
     cmd: "delete"
     opts:
       all:
         opt: "--all-namespaces"
+        exclude_opts:
+          - "ns"
+      # ========================
       l:
         opt: "-l ${}"
         parametric: true
+      # ========================
       ns:
         opt: "-n ${}"
         parametric: true
+        exclude_opts:
+          - "all"
+      # ========================
       f:
         opt: "-f ${}"
         parametric: true
-        exclude_opts: ["k"]
+        exclude_opts:
+          - "k"
         resource_specific: false
+      # ========================
       k:
         opt: "-k ${}"
         parametric: true
+        exclude_opts:
+          - "f"
         resource_specific: false
-    exclude_resources: ["no"]
+        # ========================
+    exclude_resources:
+      - "no"
+
+# ==============================================================
 
   d:
     cmd: "describe"
     opts:
+      all:
+        opt: "--all-namespaces"
+        exclude_opts:
+          - "ns"
+      # ========================
       l:
         opt: "-l ${}"
         parametric: true
+      # ========================
       ns:
         opt: "-n ${}"
         parametric: true
-    exclude_resources: ["no"]
+        exclude_opts:
+          - "all"
+      # ========================
+      r:
+        opt: "--recursive"
+      # ========================
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts:
+          - "k"
+        resource_specific: false
+      # ========================
+      k:
+        opt: "-k ${}"
+        parametric: true
+        exclude_opts:
+          - "f"
+        resource_specific: false
+        # ========================
+    exclude_resources:
+      - "no"
+
+# ==============================================================
 
   e:
     cmd: "edit"
@@ -92,20 +170,29 @@ api_cmds:
       ns:
         opt: "-n ${}"
         parametric: true
-    exclude_resources: ["no"]
+      # ========================
+    exclude_resources:
+      - "no"
+
+# ==============================================================
 
   log:
     cmd: "logs"
     opts:
       f:
         opt: "-f"
+      # ========================
       l:
         opt: "-l ${}"
         parametric: true
+      # ========================
       ns:
         opt: "-n ${}"
         parametric: true
+      # ========================
     resource_specific: false
+
+# ==============================================================
 
   a:
     cmd: "apply"
@@ -113,17 +200,24 @@ api_cmds:
       f:
         opt: "-f ${}"
         parametric: true
-        exclude_opts: ["k"]
+        exclude_opts:
+          - "k"
+      # ========================
       l:
         opt: "-l ${}"
         parametric: true
+      # ========================
       k:
         opt: "-k ${}"
         parametric: true
-        exclude_opts: ["f"]
+        exclude_opts:
+          - "f"
+      # ========================
       r:
         opt: "--recursive"
+      # ========================
       ns:
         opt: "-n ${}"
         parametric: true
+      # ========================
     resource_specific: false
