@@ -21,20 +21,23 @@ api_resources:
 
 api_cmds:
   <api_cmd_1_alias>:
-    cmd: # (string)
+    cmd: # (string - Kubectl command)
     opts:
       <opt_1_alias>:
         opt: # (string)
-        exclude_resources>: # (list: optional)
-        exclude_opts>: # (list: optional)
-        parametric>: # (bool: optional)
+        exclude_resources: # (list: optional - Exclude resources for this option of command if you don't want)
+        exclude_opts: # (list: optional - Exclude combinations with these opts if defined)
+        parametric: # (bool: optional - Option is parametric or not)
+        resource_specific: # (bool: optional - Option is resource specific or not)
 #      ...
       <opt_n_alias>:
         opt: # (string)
-        exclude_resources>: # (list: optional)
-        exclude_opts>: # (list: optional)
+        exclude_resources: # (list: optional)
+        exclude_opts: # (list: optional)
         parametric: # (bool: optional)
-    exclude_resources: # (list: optional)
+        resource_specific: # (bool: optional)
+    exclude_resources: # (list: optional - Exclude resources for this command if you don't want)
+    resource_specific: # (bool: optional - Command is resources specific or not)
 #   ....
   <api_cmd_n_alias>:
     cmd: # (string)
@@ -44,12 +47,14 @@ api_cmds:
         exclude_resources: # (list: optional)
         exclude_opts: # (list: optional)
         parametric: # (bool: optional)
+        resource_specific: # (bool: optional)
 #       ...
       <opt_n_alias>:
         opt: # (string)
         exclude_resources: # (list: optional)
         exclude_opts: # (list: optional)
         parametric: # (bool: optional)
+        resource_specific: # (bool: optional)
     exclude_resources: #(list: optional)
 ```
 
@@ -69,6 +74,8 @@ api_resources:
   dep: "deploy"
   sts: "sts"
   hpa: "hpa"
+  cj: "cj"
+  j: "jobs"
 
 
 api_cmds:
@@ -77,37 +84,198 @@ api_cmds:
     opts:
       all:
         opt: "--all-namespaces"
-        exclude_resources: ["no"]
+        exclude_resources:
+          - "no"
+        exclude_opts:
+          - "ns"
+      # ========================
       w:
         opt: "--watch"
-        exclude_resources: ["pv", "pvc", "sec", "svc", "ing"]
-        exclude_opts: ["ojson", "oyaml"]
+        exclude_resources:
+          - "pv"
+          - "pvc"
+          - "sec"
+          - "svc"
+          - "ing"
+        exclude_opts:
+          - "ojson"
+          - "oyaml"
+      # ========================
       sl:
         opt: "--show-labels"
-        exclude_opts: ["ojson", "oyaml"]
+        exclude_opts:
+          - "ojson"
+          - "oyaml"
+      # ========================
       l:
         opt: "-l ${}"
         parametric: true
-        exclude_resources: ["no"]
+        exclude_resources:
+          - "no"
+      # ========================
       ns:
         opt: "-n ${}"
         parametric: true
-        exclude_resources: ["no"]
+        exclude_opts:
+          - "all"
+        exclude_resources:
+          - "no"
+      # ========================
       owide:
         opt: "-o wide"
-        exclude_opts: ["oyaml", "ojson"]
+        exclude_opts:
+          - "oyaml"
+          - "ojson"
+      # ========================
       oyaml:
         opt: "-o yaml"
-        exclude_opts: ["w", "owide", "ojson"]
+        exclude_opts:
+          - "w"
+          - "owide"
+          - "ojson"
+      # ========================
       ojson:
         opt: "-o json"
-        exclude_opts: ["w", "owide", "oyaml"]
+        exclude_opts:
+          - "w"
+          - "owide"
+          - "oyaml"
+      # ========================
+
+# ==============================================================
 
   rm:
     cmd: "delete"
-    exclude_resources: ["no"]
+    opts:
+      all:
+        opt: "--all-namespaces"
+        exclude_opts:
+          - "ns"
+      # ========================
+      l:
+        opt: "-l ${}"
+        parametric: true
+      # ========================
+      ns:
+        opt: "-n ${}"
+        parametric: true
+        exclude_opts:
+          - "all"
+      # ========================
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts:
+          - "k"
+        resource_specific: false
+      # ========================
+      k:
+        opt: "-k ${}"
+        parametric: true
+        exclude_opts:
+          - "f"
+        resource_specific: false
+        # ========================
+    exclude_resources:
+      - "no"
+
+# ==============================================================
 
   d:
     cmd: "describe"
-    exclude_resources: ["no"]
+    opts:
+      all:
+        opt: "--all-namespaces"
+        exclude_opts:
+          - "ns"
+      # ========================
+      l:
+        opt: "-l ${}"
+        parametric: true
+      # ========================
+      ns:
+        opt: "-n ${}"
+        parametric: true
+        exclude_opts:
+          - "all"
+      # ========================
+      r:
+        opt: "--recursive"
+      # ========================
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts:
+          - "k"
+        resource_specific: false
+      # ========================
+      k:
+        opt: "-k ${}"
+        parametric: true
+        exclude_opts:
+          - "f"
+        resource_specific: false
+        # ========================
+    exclude_resources:
+      - "no"
+
+# ==============================================================
+
+  e:
+    cmd: "edit"
+    opts:
+      ns:
+        opt: "-n ${}"
+        parametric: true
+      # ========================
+    exclude_resources:
+      - "no"
+
+# ==============================================================
+
+  log:
+    cmd: "logs"
+    opts:
+      f:
+        opt: "-f"
+      # ========================
+      l:
+        opt: "-l ${}"
+        parametric: true
+      # ========================
+      ns:
+        opt: "-n ${}"
+        parametric: true
+      # ========================
+    resource_specific: false
+
+# ==============================================================
+
+  a:
+    cmd: "apply"
+    opts:
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts:
+          - "k"
+      # ========================
+      l:
+        opt: "-l ${}"
+        parametric: true
+      # ========================
+      k:
+        opt: "-k ${}"
+        parametric: true
+        exclude_opts:
+          - "f"
+      # ========================
+      r:
+        opt: "--recursive"
+      # ========================
+      ns:
+        opt: "-n ${}"
+        parametric: true
+      # ========================
+    resource_specific: false
 ```
