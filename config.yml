@@ -19,6 +19,7 @@ api_resources:
   hpa: "hpa"
   cj: "cj"
   j: "jobs"
+  cm: "cm"
 
 
 api_cmds:
@@ -37,6 +38,7 @@ api_cmds:
         exclude_resources:
           - "pv"
           - "pvc"
+          - "cm"
           - "sec"
           - "svc"
           - "ing"
@@ -220,4 +222,23 @@ api_cmds:
         opt: "-n ${}"
         parametric: true
       # ========================
+    resource_specific: false
+
+# ==============================================================
+
+  pw:
+    cmd: "port-forward"
+    resource_specific: false
+
+# ==============================================================
+
+  x:
+    cmd: "exec"
+    opts:
+      it:
+        opt: "-it ${}"
+        parametric: true
+      cmd:
+        opt: "-- ${}"
+        parametric: true
     resource_specific: false
