@@ -113,7 +113,11 @@ class K8SAliasgen:
 
 
 if __name__ == "__main__":
+    if len(argv) <= 1:
+        print("usage: python k8s_aliasgen.py <config_filename>")
+        exit(1)
+
     try:
         K8SAliasgen(config_filename=argv[1]).generate()
-    except:
-        print("usage: python k8s_aliasgen.py <config_filename>")
+    except Exception as ex:
+        print(ex)

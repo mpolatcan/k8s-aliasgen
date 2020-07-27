@@ -26,12 +26,17 @@ api_cmds:
   g:
     cmd: "get"
     opts:
-      all:
+      nsall:
         opt: "--all-namespaces"
         exclude_resources:
           - "no"
         exclude_opts:
           - "ns"
+      # ========================
+      all:
+        opt: "--all"
+        exclude_resources:
+          - "no"
       # ========================
       w:
         opt: "--watch"
@@ -92,10 +97,15 @@ api_cmds:
   rm:
     cmd: "delete"
     opts:
-      all:
+      nsall:
         opt: "--all-namespaces"
         exclude_opts:
           - "ns"
+      # ========================
+      all:
+        opt: "--all"
+        exclude_resources:
+          - "no"
       # ========================
       l:
         opt: "-l ${}"
@@ -241,4 +251,34 @@ api_cmds:
       cmd:
         opt: "-- ${}"
         parametric: true
+    resource_specific: false
+
+# ================================================================
+
+  c:
+    cmd: "create"
+    opts:
+      f:
+        opt: "-f ${}"
+        parametric: true
+        exclude_opts:
+          - "k"
+      # ========================
+      l:
+        opt: "-l ${}"
+        parametric: true
+      # ========================
+      k:
+        opt: "-k ${}"
+        parametric: true
+        exclude_opts:
+          - "f"
+      # ========================
+      r:
+        opt: "--recursive"
+      # ========================
+      ns:
+        opt: "-n ${}"
+        parametric: true
+      # ========================
     resource_specific: false
